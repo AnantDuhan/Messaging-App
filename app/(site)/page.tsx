@@ -1,5 +1,6 @@
 import Image from "next/image";
-import AuthForm from "./AuthForm";
+import AuthForm from "./components/AuthForm";
+import 'dotenv/config';
 
 export default function Home() {
     return (
