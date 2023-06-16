@@ -1,15 +1,16 @@
 'use client';
 
-import axios from "axios";
-import { useCallback, useState, useEffect } from 'react';
-import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
-import Input from "../../components/inputs/Input";
-import Button from "../../components/Button";
-import AuthSocialButton from "./AuthSocialButton";
-import { BsGithub, BsGoogle } from 'react-icons/bs';
-import { toast } from 'react-hot-toast';
+import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
+import { useCallback, useEffect, useState } from 'react';
+import { BsGithub, BsGoogle } from 'react-icons/bs';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+
+import Input from '@/app/components/inputs/Input';
+import AuthSocialButton from './AuthSocialButton';
+import Button from '@/app/components/Button';
+import { toast } from 'react-hot-toast';
 
 type Variant = 'LOGIN' | 'REGISTER';
 
@@ -21,8 +22,7 @@ const AuthForm = () => {
 
     useEffect(() => {
         if (session?.status === 'authenticated') {
-            router.push('/users');
-            // console.log("Authenticated")
+            router.push('/conversations');
         }
     }, [session?.status, router]);
 
@@ -61,10 +61,12 @@ const AuthForm = () => {
                 .then((callback) => {
                     if (callback?.error) {
                         toast.error('Invalid credentials!');
+                        console.log('fir se wahi!!');
                     }
 
                     if (callback?.ok) {
                         router.push('/users');
+                        console.log("chala kyaaa??")
                     }
                 })
                 .catch(() => toast.error('Something went wrong!'))
@@ -87,7 +89,7 @@ const AuthForm = () => {
                 })
                 .finally(() => setIsLoading(false));
         }
-    }
+    };
 
     const socialAction = (action: string) => {
         setIsLoading(true);
@@ -96,19 +98,28 @@ const AuthForm = () => {
             .then((callback) => {
                 if (callback?.error) {
                     toast.error('Invalid credentials!');
+                    console.log("yaha bhi dikkat!!")
                 }
 
-                if (callback?.ok && !callback?.error) {
-                    router.push('/conversations');
-                    toast.success('Logged in!')
+                if (callback?.ok) {
+                    router.push('/users');
                 }
             })
             .finally(() => setIsLoading(false));
-    }
+    };
 
     return (
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-            <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
+            <div
+                className="
+                    bg-white
+                    px-4
+                    py-8
+                    shadow
+                    sm:rounded-lg
+                    sm:px-10
+                    "
+            >
                 <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                     {variant === 'REGISTER' && (
                         <Input
@@ -140,14 +151,21 @@ const AuthForm = () => {
                     />
                     <div>
                         <Button disabled={isLoading} fullWidth type="submit">
-                            {variant === 'LOGIN' ? 'Sign In' : 'Register'}
+                            {variant === 'LOGIN' ? 'Sign in' : 'Register'}
                         </Button>
                     </div>
                 </form>
 
                 <div className="mt-6">
                     <div className="relative">
-                        <div className="absolute inset-0 flex items-center">
+                        <div
+                            className="
+                                absolute 
+                                inset-0 
+                                flex 
+                                items-center
+                            "
+                        >
                             <div className="w-full border-t border-gray-300" />
                         </div>
                         <div className="relative flex justify-center text-sm">
@@ -156,6 +174,7 @@ const AuthForm = () => {
                             </span>
                         </div>
                     </div>
+
                     <div className="mt-6 flex gap-2">
                         <AuthSocialButton
                             icon={BsGithub}
@@ -167,7 +186,6 @@ const AuthForm = () => {
                         />
                     </div>
                 </div>
-
                 <div
                     className="
                         flex 
@@ -181,7 +199,7 @@ const AuthForm = () => {
                 >
                     <div>
                         {variant === 'LOGIN'
-                            ? 'New User?'
+                            ? 'New to Messenger?'
                             : 'Already have an account?'}
                     </div>
                     <div
@@ -191,10 +209,9 @@ const AuthForm = () => {
                         {variant === 'LOGIN' ? 'Create an account' : 'Login'}
                     </div>
                 </div>
-
             </div>
         </div>
     );
-}
- 
+};
+
 export default AuthForm;
