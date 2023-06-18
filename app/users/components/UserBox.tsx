@@ -16,6 +16,7 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
 
     const handleClick = useCallback(() => {
         setIsLoading(true);
+        console.log("ID: ", data.id);
 
         axios
             .post('/api/conversations', { userId: data.id })
@@ -25,6 +26,7 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
             .finally(() => setIsLoading(false));
     }, [data, router]);
 
+    
     return (
         <>
             {isLoading && <LoadingModal />}
