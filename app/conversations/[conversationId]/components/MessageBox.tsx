@@ -25,8 +25,8 @@ const MessageBox: React.FC<MessageBoxProps> = ({
 
   const isOwn = session.data?.user?.email === data?.sender?.email
   const seenList = (data.seen || [])
-    .filter((user) => user.email !== data?.sender?.email)
-    .map((user) => user.name)
+    .filter((user: any) => user.email !== data?.sender?.email)
+    .map((user: any) => user.name)
     .join(', ');
 
   const container = clsx('flex gap-3 p-4', isOwn && 'justify-end');
